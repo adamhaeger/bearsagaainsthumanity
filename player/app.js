@@ -28,11 +28,26 @@ app.controller('chatController', ['$scope', '$interval', '$location', function($
 
     var positionSuccess = function(lat, long){
 
+        $scope.player.lat = lat.coords.latitude;
+        $scope.player.long = lat.coords.longitude;
+        //console.log('Updating position for: ', $scope.player);
         player.emit('latLong', {
             id : $scope.player.id,
             lat : lat.coords.latitude,
             long: lat.coords.longitude
         });
+    }
+    $scope.burn = function() {
+        console.log('Activated burn: ', $scope.player);
+        // if ($scope.player.burnAmmo > 0) {
+        //         $scope.player.burnAmmo--;
+        //         //socket.emit("newPlayer", attackingPlayer);
+        //     };
+        player.emit('burn', {
+            id : $scope.player.id,
+            lat : $scope.player.lat,
+            long: $scope.player.long
+        })
     }
 
 
@@ -43,11 +58,12 @@ app.controller('chatController', ['$scope', '$interval', '$location', function($
 
 
     player.on("newPlayer", function(player){
-        console.log("this is our player:", player);
-        $scope.player = player;
-        console.log('new player added');
-
+        if(!$scope.player || $scope.player.id === player.id){
+            console.log("updated player:", player);
+             $scope.player = player;
+         }
     });
+
 
 
     socket.on("newPosition", function(msg){
