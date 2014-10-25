@@ -16,10 +16,11 @@ app.run(function () {
 
 
 
-app.controller('spectatorController', ['$scope', function($scope) {
+app.controller('spectatorController', ['$scope','$location', function($scope,$location) {
+	var hostUrl = $location.$$protocol+'://'+$location.$$host+':'+$location.$$port;
 	spectator = this;
 	//var socket = io();
-	var socket = io.connect('http://localhost:8888/spectator');
+	var socket = io.connect(hostUrl+'/spectator');
 	var spectator
 	var map;
 	var myLatlng = new google.maps.LatLng(59.438006,10.593910);
@@ -70,7 +71,7 @@ app.controller('spectatorController', ['$scope', function($scope) {
 		console.log("connected to server");
 	});
 	socket.on('newPosition', function(msg){
-		        
+
         console.log('new lat: ' + msg.lat);
         console.log('new long: ' + msg.long);
         console.log('new id: ' + msg.id);
@@ -109,6 +110,6 @@ app.controller('spectatorController', ['$scope', function($scope) {
 	}
 	
 	spectator.initialize();
-	test();
+	//test();
 
 }]);
