@@ -18,16 +18,9 @@
 <h1>This is the sender</h1>
 
 
-<input type="text"  ng-model="chatMessage"/>
-
-
-<button ng-click="sendMessage(chatMessage)"></button>
-
-
-<p>Current Lat:{{ player.lat }}</p>
-<p>Current Long:{{ player.long }}</p>
+<p ng-if="playerName">You are:{{ playerName }}</p>
 <p>Your userId Is: {{ player.id }}</p>
-<p>Player count: {{ socketCount }}</p>
+<!--<p>Player count: {{ socketCount }}</p>-->
 
 
 </body>

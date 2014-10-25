@@ -14,6 +14,22 @@ app.run(function () {
 });
 
 
+app.config(function ($routeProvider, $locationProvider) {
+
+
+
+    $routeProvider
+        .when('/', {
+            templateUrl: 'main.html'
+        })
+
+        .when('/chat:player_id', {
+            templateUrl: 'main.html'
+        })
+
+});
+
+
 app.controller('supporterController', ['$scope','$location', function($scope,$location) {
     var hostUrl = $location.$$protocol+'://'+$location.$$host+':'+$location.$$port;
     var players = [];
@@ -27,8 +43,11 @@ app.controller('supporterController', ['$scope','$location', function($scope,$lo
         players[msg.id] = msg;
     });
     socket.on('playerlist', function(msg){
-        players = msg;
-        console.log("Players: " + players);
+
+        console.log(msg);
+        $scope.players = msg;
+        console.log("Players: ", msg);
+        $scope.$apply();
     });
 
 }]);

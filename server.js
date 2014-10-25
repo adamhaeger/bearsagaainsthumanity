@@ -3,9 +3,9 @@
 
 /**/
 /*var fs = require('fs')*/
+
 var express = require("express");
 var app = express();
-/*var app = require('express')();*/
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var socketCount = 0;
@@ -13,12 +13,15 @@ var socketCount = 0;
 app.use(express.static(__dirname));
 
 
-var players = [];
+var that =  this;
+
+that.players = [];
 
 function Player() {
 
     this.id = guid();
     this.lat;
+    this.name;
     this.long;
 
 }
@@ -32,24 +35,24 @@ var player = io.of("/player")
         console.log("new player connected");
 
         var newPlayer =  new Player();
-        players[newPlayer.id] = newPlayer;
+        that.players.push(newPlayer);
 
-
-        console.log("this is players", players);
+        console.log("this is players", that.players);
 
         console.log("this is our player:", newPlayer);
 
         player.emit("newPlayer", newPlayer);
 
+
+
         socket.on('latLong', function(msg){
             console.log("receiving new lat longs");
 
-            players[msg.id].lat = msg.lat;
-            players[msg.id].long = msg.long;
-
-            console.log(players[msg.id]);
-
-            spectator.emit('newPosition', players[msg.id]);
+            var position = that.players.indexOf(msg.id)
+            var changeObject = findById(that.players, msg.id);
+            changeObject.lat = msg.lat;
+            changeObject.long = msg.long;
+            spectator.emit('newPosition', changeObject);
         });
     });
 
@@ -68,6 +71,12 @@ var supporter = io.of('supporter')
     .on("connection", function(socket){
 
         console.log("got a new supporter connection");
+        console.log("this is the supporter methdos");
+        console.log("this is our players", that.players);
+
+
+        console.log("this is our players stringified", JSON.stringify(that.players));
+        supporter.emit('playerlist', that.players);
 
         //socket.on("newPosition", function(player){})
     });
@@ -139,6 +148,15 @@ http.listen(process.env.PORT || 8888, function(){
 });
 
 
+
+function findById(source, id) {
+    for (var i = 0; i < source.length; i++) {
+        if (source[i].id === id) {
+            return source[i];
+        }
+    }
+    throw "Couldn't find object with id: " + id;
+}
 
 
 var guid = (function() {

@@ -20,19 +20,13 @@ app.controller('chatController', ['$scope', '$interval', '$location', function($
 
     var player = io.connect(hostUrl + "/player");
 
-
-
-    /*player.on('connect', function () {
-        player.emit('hi!');
-    });*/
-
     var positionSuccess = function(lat, long){
 
-        /*player.emit('latLong', {
+        player.emit('latLong', {
             id : $scope.player.id,
             lat : lat.coords.latitude,
             long: lat.coords.longitude
-        });*/
+        });
     }
 
 
@@ -89,11 +83,8 @@ app.controller('chatController', ['$scope', '$interval', '$location', function($
     }, 500);
 
 
-$scope.chatMessage = "this is the message";
+//$scope.setName = "this is the message";
 
-    $scope.sendMessage = function(message){
-        console.log("sending message", message);
-        socket.emit('chat message', message);
-    }
+
 
 }]);
