@@ -34,11 +34,9 @@ body {
     background-color:greenyellow;
 
 }
-
     body.playerburned {
         background-color: maroon;
     }
-
 
 .blink {
     animation: blink 1s steps(5, start) infinite;
@@ -70,6 +68,14 @@ body {
 
     <p>Your userId Is: {{ player.id }}</p>
     <p>Player isBurned: {{ player.isBurned }}</p>
+
+    <hr style="border-color:greenyellow;"/>
+    <span>Messages:</span>
+
+
+    <ul ng-repeat="">
+        <li></li>
+    </ul>
 
 </div>
 
