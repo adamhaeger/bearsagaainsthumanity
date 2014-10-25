@@ -27,15 +27,16 @@ app.controller('chatController', ['$scope', '$interval', '$location', function($
     });*/
 
     var positionSuccess = function(lat, long){
-
+    if ($scope.player && !$scope.player.isBurned) {
         $scope.player.lat = lat.coords.latitude;
-        $scope.player.long = lat.coords.longitude;
-        //console.log('Updating position for: ', $scope.player);
-        player.emit('latLong', {
-            id : $scope.player.id,
-            lat : lat.coords.latitude,
-            long: lat.coords.longitude
-        });
+            $scope.player.long = lat.coords.longitude;
+            //console.log('Updating position for: ', $scope.player);
+            player.emit('latLong', {
+                id : $scope.player.id,
+                lat : lat.coords.latitude,
+                long: lat.coords.longitude
+            });
+    };    
     }
     $scope.burn = function() {
         console.log('Activated burn: ', $scope.player);
@@ -44,7 +45,7 @@ app.controller('chatController', ['$scope', '$interval', '$location', function($
         //         //socket.emit("newPlayer", attackingPlayer);
         //     };
         player.emit('burn', {
-            id : $scope.player.id,
+            player : $scope.player,
             lat : $scope.player.lat,
             long: $scope.player.long
         })

@@ -39,7 +39,7 @@ var player = io.of("/player")
         var newPlayer =  new Player();
         bear.players.push(newPlayer);
 
-        console.log("this is our player:", bear.players);
+        //console.log("this is our player:", bear.players);
 
         player.emit("newPlayer", newPlayer);
 
@@ -57,7 +57,7 @@ var player = io.of("/player")
 
         socket.on('burn', function(msg) {
             console.log('Starting burn!', msg);
-            var attackingPlayer = players[msg.id];
+            var attackingPlayer = msg.player;
             if (!attackingPlayer.burnAmmo) {
                 console.log('no ammo left canceling burn');
                 return;
@@ -66,9 +66,8 @@ var player = io.of("/player")
                 attackingPlayer.burnAmmo--;
                 player.emit("newPlayer", attackingPlayer);
             };
-            var playerIds = Object.keys(players);
-            for (var i = 0; i < playerIds.length; i++) {
-                var defendingPlayer = players[playerIds[i]];
+            for (var i = 0; i < bear.players.length; i++) {
+                var defendingPlayer = bear.players[i];
                 if (attackingPlayer.id === defendingPlayer.id) {
                     console.log('skipping self');
                     continue;
