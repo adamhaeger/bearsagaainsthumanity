@@ -23,11 +23,29 @@ app.controller('spectatorController', ['$scope','$location', function($scope,$lo
 	var socket = io.connect(hostUrl+'/spectator');
 	var map;
 	var myLatlng = new google.maps.LatLng(59.438006,10.593910);
-	//var carebearImg = 'images/carebear.png';
-	var carebearImg = 'http://www.agence2presse.eu/Agence2Presse/Scripts/Widgets/Timer/flip/';
+	var carebearImg = 'images/carebear.png';
+	//var carebearImg = 'http://www.agence2presse.eu/Agence2Presse/Scripts/Widgets/Timer/flip/';
 	var players = [];
 	var playerExists = function(id) {
 		return (typeof players[id] != 'undefined');
+	}
+	var burnPlayer = function(id) {
+		if(players[id]) {
+			players[id].marker.setIcon("http://img1.wikia.nocookie.net/__cb20100718075739/callofduty/images/5/5a/Icon_skull.png");
+			players[id].marker.setAnimation(google.maps.Animation.BOUNCE);
+			setTimeout(function() {
+				players[id].marker.setAnimation(null);
+			}, 2000);			
+		}
+
+
+	}
+	var removePlayer = function(id) {
+		players[id].marker.setAnimation(google.maps.Animation.BOUNCE);
+		setTimeout(function() {
+			players[id].marker.setMap(null);			
+		}, 2000);
+
 	}
 	var createPlayer = function(id,lat,long) {
 		var playersLatlng = new google.maps.LatLng(lat,long);
@@ -40,14 +58,16 @@ app.controller('spectatorController', ['$scope','$location', function($scope,$lo
 			    position: playersLatlng,
 			    map: map,
 			    title:"PLayerId:"+id,
-			    icon: carebearImg+id+'.png'
+			    icon: carebearImg
 			}),
 			infoWindow: new google.maps.InfoWindow({
       			content: getInfoWindowContent(id,lat,long),
 		         disableAutoPan: false,		
      			maxWidth: 150
 			})
+
 		}
+		console.log(players.indexOf(players[id]));
 
 		players[id].infoWindow.open(map,players[id].marker);
 		
@@ -61,6 +81,7 @@ app.controller('spectatorController', ['$scope','$location', function($scope,$lo
 		//setTimeout(function() {players[id].marker.setAnimation(null);}, 2000);
 
 	}
+	var message
 	spectator.initialize = function() {
 		var mapOptions = {
 		  center: myLatlng,
@@ -75,6 +96,10 @@ app.controller('spectatorController', ['$scope','$location', function($scope,$lo
 	
 	socket.on('connect',function() {
 		console.log("connected to server");
+	});
+	socket.on('burnedPlayer', function(msg){
+		console.log('burning: '+msg.id);
+		burnPlayer(msg.id);
 	});
 	socket.on('newPosition', function(msg){
 
@@ -94,9 +119,17 @@ app.controller('spectatorController', ['$scope','$location', function($scope,$lo
 		createPlayer(2,59.438206,10.590910);
 		console.log("Player exists:"+playerExists(1));
 		setTimeout(function() {
+			console.log("Burning player")
+			burnPlayer(2);
+		}, 2000);
+		setTimeout(function() {
 			console.log("Positioning player")
 			positionPlayer(1,59.435100,10.5926001);
 		}, 1000);
+		setTimeout(function() {
+			console.log("Removing player")
+			removePlayer(1);
+		}, 5000);
 		socket.emit('latLong', {
 			id: 3,
 			lat: 59.430006,
@@ -126,6 +159,6 @@ app.controller('spectatorController', ['$scope','$location', function($scope,$lo
 		      '</div>';
 	}
 	spectator.initialize();
-	test();
+	//test();
 
 }]);
