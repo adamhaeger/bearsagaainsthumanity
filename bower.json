@@ -1,0 +1,16 @@
+{
+  "name": "bearsagainsthumanity",
+  "version": "0.4.0",
+  "dependencies": {
+    "angular-resource": "1.2.6",
+    "angular-cookies": "1.2.6",
+    "angular-sanitize": "1.2.6",
+    "angular-route": "1.2.6"
+  },
+  "devDependencies": {
+    "fastclick": "~1.0.0"
+  },
+  "resolutions": {
+    "angular": "1.2.6"
+  }
+}

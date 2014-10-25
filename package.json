@@ -1,0 +1,10 @@
+{
+  "name": "CareBears",
+  "version": "0.0.1",
+  "devDependencies": {
+    "gulp": "latest"
+  },
+  "dependencies": {
+    "express": "latest"
+  }
+}
