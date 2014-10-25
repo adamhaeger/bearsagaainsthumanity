@@ -36,7 +36,7 @@ var player = io.of("/player")
         console.log("new player connected");
         var newPlayer =  new Player();
         bear.players.push(newPlayer);
-
+        
 
         console.log("this is players", players);
         console.log("this is our player:", newPlayer);
@@ -51,6 +51,9 @@ var player = io.of("/player")
 
             players[msg.id].lat = msg.lat;
             players[msg.id].long = msg.long;
+            players[msg.id].lat = msg.lat;
+            players[msg.id].long = msg.long;
+
                 spectator.emit('newPosition', bear.players[msg.id]);
             }
         });
