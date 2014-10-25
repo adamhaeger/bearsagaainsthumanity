@@ -35,7 +35,9 @@ app.controller('spectatorController', ['$scope','$location', function($scope,$lo
 			players[id].marker.setAnimation(google.maps.Animation.BOUNCE);
 			setTimeout(function() {
 				players[id].marker.setAnimation(null);
-			}, 2000);			
+				players[id].infoWindow.close(map,players[id].marker);
+			}, 2000);
+
 		}
 
 
@@ -73,9 +75,10 @@ app.controller('spectatorController', ['$scope','$location', function($scope,$lo
 		
 	}
 	var positionPlayer = function(id,lat,long) {
-
-		var playersLatlng = new google.maps.LatLng(lat,long);
-		players[id].marker.setPosition(playersLatlng);
+		if(!players[id].isBurned) {
+			var playersLatlng = new google.maps.LatLng(lat,long);
+			players[id].marker.setPosition(playersLatlng);
+		}
 		//players[id].infoWindow.setContent(getInfoWindowContent(id,lat,long));
 		//players[id].marker.setAnimation(google.maps.Animation.BOUNCE);
 		//setTimeout(function() {players[id].marker.setAnimation(null);}, 2000);
