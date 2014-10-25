@@ -38,6 +38,7 @@ app.controller('spectatorController', ['$scope','$location', function($scope,$lo
 				players[id].marker.setAnimation(null);
 				players[id].infoWindow.close(map,players[id].marker);
 			}, 2000);
+			
 
 		}
 
@@ -85,7 +86,6 @@ app.controller('spectatorController', ['$scope','$location', function($scope,$lo
 		//setTimeout(function() {players[id].marker.setAnimation(null);}, 2000);
 
 	}
-	var message
 	spectator.initialize = function() {
 		var mapOptions = {
 		  center: myLatlng,
@@ -104,6 +104,10 @@ app.controller('spectatorController', ['$scope','$location', function($scope,$lo
 	socket.on('burnedPlayer', function(msg){
 		console.log('burning: '+msg.id);
 		burnPlayer(msg.id);
+	});
+	socket.on('message', function(msg){
+		$scope.feedItems.splice(0, 0, msg);
+		$scope.$apply();
 	});
 	socket.on('newPosition', function(msg){
 
@@ -149,9 +153,12 @@ app.controller('spectatorController', ['$scope','$location', function($scope,$lo
 
 			});
 		}, 3000);
+
 		
 	}
-	$scope.message = 'hello';
+	//$scope.feedItems = ['Player 1 burned player 2','Player 4 burned player 1','Player 2 left the game','Player 1 burned player 7'];
+	
+	$scope.feedItems = [];
 	function getInfoWindowContent(id,lat,long) {
 		return '<div class="infoWindowContent" id="markerInfo'+id+'">'+
 		      '<div id="siteNotice">'+

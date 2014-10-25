@@ -83,6 +83,7 @@ var player = io.of("/player")
                     spectator.emit('burnedPlayer', defendingPlayer);
                     supporter.emit('burnedPlayer', defendingPlayer);
                     player.emit("newPlayer", defendingPlayer);
+                    spectator.emit('message','Player '+attackingPlayer.id+' burned player '+defendingPlayer.id+'!!! Distance '+distanceFromAttackingPlayer);
                 };
             };
         });
