@@ -36,14 +36,21 @@ var player = io.of("/player")
         console.log("new player connected");
         var newPlayer =  new Player();
         bear.players.push(newPlayer);
-        //console.log("this is our player:", bear.players);
+
+
+        console.log("this is players", players);
+        console.log("this is our player:", newPlayer);
+
         player.emit("newPlayer", newPlayer);
         socket.on('latLong', function(msg){
-            //console.log("receiving new lat longs");
             if (msg.lat && msg.long && bear.players[msg.id]) {
                 bear.players[msg.id].lat = msg.lat;
                 bear.players[msg.id].long = msg.long;
-                //console.log(players[msg.id]);
+
+            console.log("receiving new lat longs");
+
+            players[msg.id].lat = msg.lat;
+            players[msg.id].long = msg.long;
                 spectator.emit('newPosition', bear.players[msg.id]);
             }
         });
@@ -102,67 +109,6 @@ var supporter = io.of('/supporter')
     //socket.on("newPosition", function(player){})
 });
 
-
-
-
-/*io.of(/spectator)
-
-io.of(/supporter)*/
-
-/*
-
-
-io.on('connection', function(socket){
-    socketCount++;
-    console.log('a user connected');
-
-
-
-    player.id = socketCount;
-
-    players[player.id] = player;
-
-    console.log('this is our player:', players);
-
-    console.log(players);
-
-    socket.emit("newPlayer", players);
-
-    socket.emit('socketCountChange',socketCount);
-
-
-    socket.playerId = player.id;
-
-
-    socket.on('disconnect', function(){
-        socketCount--;
-        console.log('user disconnected');
-
-        delete players[socket.playerId];
-
-        socket.emit('socketCountChange', socketCount);
-
-    });
-
-
-
-    socket.on('latLong', function(msg){
-
-*/
-/*
-        console.log(msg);
-
-        console.log('new lat: ' + msg.lat);
-        console.log('new long: ' + msg.long)*//*
-;
-
-        players[msg.id].lat = msg.lat;
-        players[msg.id].long = msg.long;
-        socket.emit("newPosition", player[msg.id])
-    });
-
-});
-*/
 
 http.listen(process.env.PORT || 8888, function(){
     console.log('listening on *:8888');
