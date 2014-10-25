@@ -27,7 +27,7 @@ app.controller('supporterController', ['$scope','$location', function($scope,$lo
     });
     socket.on('playerlist', function(msg){
         players = msg;
-        console.log("Players: " + players);
+        console.log("Players: " , players);
     });
 
 }]);

@@ -37,7 +37,7 @@ var player = io.of("/player")
         console.log("new player connected");
         test = "Esepn Ottar"
         var newPlayer =  new Player();
-        bear.players[newPlayer.id] = newPlayer;
+        bear.players.push(newPlayer);
 
         console.log("this is our player:", bear.players);
 
@@ -55,7 +55,6 @@ var player = io.of("/player")
                 spectator.emit('newPosition', bear.players[msg.id]);
             }
         });
-        console.log("this is our player:", bear.players);
     });
 
 
@@ -64,7 +63,7 @@ var player = io.of("/player")
 var spectator = io.of('/spectator')
     .on("connection", function(socket){
 
-        console.log("got a new spectator connection" + bear.players);
+        console.log("got a new spectator connection" , bear.players);
 
         //socket.on("newPosition", function(player){})
     });
@@ -72,10 +71,11 @@ var spectator = io.of('/spectator')
 var supporter = io.of('/supporter')
     .on("connection", function(socket){
 
-        console.log("got a new supporter connection" + bear.players);
+     console.log("got a new supporter connection" , bear.players);
 
-        //socket.on("newPosition", function(player){})
-    });
+    socket.emit('playerlist', bear.players);
+    //socket.on("newPosition", function(player){})
+});
 
 
 
