@@ -15,14 +15,18 @@ app.run(function () {
 
 app.controller('chatController', ['$scope', '$interval', function($scope, $interval) {
 
-    var positionSuccess = function(lat, long){
+    var player = io.connect('http://localhost:8888/player');
 
-        socket.emit('latLong',{
+    player.on('connect', function () {
+        player.emit('hi!');
+    });
+
+    var positionSuccess = function(lat, long){
+        player.emit('latLong', {
             id : socket.playerId,
             lat : lat.coords.latitude,
             long: lat.coords.longitude
         });
-
     }
 
 

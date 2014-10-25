@@ -13,9 +13,11 @@ var socketCount = 0;
 app.use(express.static(__dirname));
 
 
+var players = [];
+
 function Player() {
 
-    this.id;
+    this.id = guid;
     this.lat;
     this.long;
 
@@ -23,11 +25,63 @@ function Player() {
 
 var players = [];
 
+var player = io.of("/player")
+.on("connection", function(socket){
+
+
+        console.log("new player connected");
+
+        var player =  new Player();
+        players[player.id] = player;
+
+
+        socket.on('latLong', function(msg){
+
+            console.log("receiving new lat longs");
+
+            players[msg.id].lat = msg.lat;
+            players[msg.id].long = msg.long;
+
+            //socket.emit("newPosition", player[msg.id])
+
+            spectator.emit('newPosition', player[msg.id]);
+        });
+    });
+
+
+
+
+var spectator = io.of('specator')
+    .on("connection", function(socket){
+
+        console.log("got a new spectator connection");
+
+        //socket.on("newPosition", function(player){})
+    });
+
+var supporter = io.of('supporter')
+    .on("connection", function(socket){
+
+        console.log("got a new supporter connection");
+
+        //socket.on("newPosition", function(player){})
+    });
+
+
+
+
+/*io.of(/spectator)
+
+io.of(/supporter)*/
+
+/*
+
+
 io.on('connection', function(socket){
     socketCount++;
     console.log('a user connected');
 
-    var player =  new Player();
+
 
     player.id = socketCount;
 
@@ -55,17 +109,17 @@ io.on('connection', function(socket){
 
     });
 
-    socket.on('chat message', function(msg){
-        console.log('message: ' + msg);
-    });
+
 
     socket.on('latLong', function(msg){
 
+*/
 /*
         console.log(msg);
 
         console.log('new lat: ' + msg.lat);
-        console.log('new long: ' + msg.long)*/;
+        console.log('new long: ' + msg.long)*//*
+;
 
         players[msg.id].lat = msg.lat;
         players[msg.id].long = msg.long;
@@ -73,6 +127,7 @@ io.on('connection', function(socket){
     });
 
 });
+*/
 
 http.listen(process.env.PORT || 8888, function(){
     console.log('listening on *:8888');
