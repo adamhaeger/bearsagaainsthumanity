@@ -23,11 +23,14 @@
 
 <button ng-click="sendMessage(chatMessage)"></button>
 
+<span>Ammo: {{ player.burnAmmo }}</span>
+<button ng-click="burn()">Burn Baby</button>
+
 
 <p>Current Lat:{{ player.lat }}</p>
 <p>Current Long:{{ player.long }}</p>
 <p>Your userId Is: {{ player.id }}</p>
-<p>Player count: {{ socketCount }}</p>
+<p>Player isBurned: {{ player.isBurned }}</p>
 
 
 </body>
