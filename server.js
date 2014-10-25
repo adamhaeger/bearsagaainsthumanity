@@ -10,65 +10,71 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var socketCount = 0;
 
+bear = this;
+
 app.use(express.static(__dirname));
 
 
-var players = [];
+bear.players = [];
+
+
+var numPlayers = 0;
 
 function Player() {
-
-    this.id = guid();
+    
+    this.id = numPlayers;
     this.lat;
     this.long;
+    numPlayers++;
+
 
 }
-
-var players = [];
 
 var player = io.of("/player")
 .on("connection", function(socket){
 
 
         console.log("new player connected");
-
         var newPlayer =  new Player();
-        players[newPlayer.id] = newPlayer;
+        bear.players.push(newPlayer);
 
-        console.log("this is our player:", newPlayer);
+        console.log("this is our player:", bear.players);
 
         player.emit("newPlayer", newPlayer);
 
         socket.on('latLong', function(msg){
 
-            console.log("receiving new lat longs");
+            //console.log("receiving new lat longs");
+            if (bear.players[msg.id]) {
+                bear.players[msg.id].lat = msg.lat;
+                bear.players[msg.id].long = msg.long;
 
-            players[msg.id].lat = msg.lat;
-            players[msg.id].long = msg.long;
+                //console.log(players[msg.id]);
 
-            console.log(players[msg.id]);
-
-            spectator.emit('newPosition', players[msg.id]);
+                spectator.emit('newPosition', bear.players[msg.id]);
+            }
         });
     });
 
 
 
 
-var spectator = io.of('spectator')
+var spectator = io.of('/spectator')
     .on("connection", function(socket){
 
-        console.log("got a new spectator connection");
+        console.log("got a new spectator connection" , bear.players);
 
         //socket.on("newPosition", function(player){})
     });
 
-var supporter = io.of('supporter')
+var supporter = io.of('/supporter')
     .on("connection", function(socket){
 
-        console.log("got a new supporter connection");
+     console.log("got a new supporter connection" , bear.players);
 
-        //socket.on("newPosition", function(player){})
-    });
+    socket.emit('playerlist', bear.players);
+    //socket.on("newPosition", function(player){})
+});
 
 
 
