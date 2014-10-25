@@ -13,13 +13,13 @@ app.run(function () {
 
 });
 
-app.controller('chatController', ['$scope', '$interval', function($scope, $interval) {
+app.controller('chatController', ['$scope', '$interval', '$location', function($scope, $interval, $location) {
 
 
     var hostUrl = $location.$$protocol+'://'+$location.$$host+':'+$location.$$port;
 
     var player = io.connect(hostUrl);
-    
+
 
 
     player.on('connect', function () {
