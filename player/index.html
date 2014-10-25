@@ -24,7 +24,7 @@
 <button ng-click="sendMessage(chatMessage)"></button>
 
 <span>Ammo: {{ player.burnAmmo }}</span>
-<button ng-click="burn()">Burn Baby</button>
+<button ng-click="burn()" ng-disabled="player.isBurned">Burn Baby</button>
 
 
 <p>Current Lat:{{ player.lat }}</p>
