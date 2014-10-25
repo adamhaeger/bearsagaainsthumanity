@@ -31,14 +31,15 @@ io.on('connection', function(socket){
 
     player.id = socketCount;
 
-    players[player.id];
+    players[player.id] = player;
+
+    console.log('this is our player:', players);
 
     console.log(players);
 
     socket.emit("newPlayer", players);
 
     socket.emit('socketCountChange',socketCount);
-
 
 
     socket.playerId = player.id;
@@ -59,12 +60,17 @@ io.on('connection', function(socket){
     });
 
     socket.on('latLong', function(msg){
+
+/*
+        console.log(msg);
+
         console.log('new lat: ' + msg.lat);
-        console.log('new long: ' + msg.long);
-        socket.emit("newPosition", msg)
+        console.log('new long: ' + msg.long)*/;
+
+        players[msg.id].lat = msg.lat;
+        players[msg.id].long = msg.long;
+        socket.emit("newPosition", player[msg.id])
     });
-
-
 
 });
 

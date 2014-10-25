@@ -16,14 +16,9 @@ app.run(function () {
 app.controller('chatController', ['$scope', '$interval', function($scope, $interval) {
 
     var positionSuccess = function(lat, long){
-/*
-        console.log(lat.coords.latitude, lat.coords.longitude);
-        $scope.player.lat = lat.coords.latitude;
-        $scope.player.long = lat.coords.longitude;
-*/
 
         socket.emit('latLong',{
-//            userId : $scope.userId,
+            id : socket.playerId,
             lat : lat.coords.latitude,
             long: lat.coords.longitude
         });
@@ -38,13 +33,16 @@ app.controller('chatController', ['$scope', '$interval', function($scope, $inter
 
 
     socket.on("newPlayer", function(players){
+        console.log(socket.playerId);
         //$scope.player = player;
-
+        console.log('new player added');
         console.log(Object.keys(players));
     });
 
 
     socket.on("newPosition", function(msg){
+
+        console.log("this is new position");
         console.log(msg);
     })
 
