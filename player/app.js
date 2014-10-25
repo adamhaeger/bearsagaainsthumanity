@@ -9,7 +9,7 @@ var app = angular.module('app', [
 
 app.run(function () {
 
-    console.log("hey there this receiver");
+    console.log("hey there this is the player");
 
 });
 
@@ -18,15 +18,16 @@ app.controller('chatController', ['$scope', '$interval', '$location', function($
 
     var hostUrl = $location.$$protocol+'://'+$location.$$host+':'+$location.$$port;
 
-    var player = io.connect(hostUrl);
+    var player = io.connect(hostUrl + "/player");
 
 
 
-    player.on('connect', function () {
+    /*player.on('connect', function () {
         player.emit('hi!');
-    });
+    });*/
 
     var positionSuccess = function(lat, long){
+
         player.emit('latLong', {
             id : $scope.player.id,
             lat : lat.coords.latitude,

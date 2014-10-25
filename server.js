@@ -36,7 +36,9 @@ var player = io.of("/player")
 
         console.log("this is our player:", player);
 
-        socket.emit("newPlayer", player);
+
+
+        player.emit("newPlayer", player);
 
         socket.on('latLong', function(msg){
 
