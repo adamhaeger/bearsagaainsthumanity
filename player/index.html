@@ -10,6 +10,7 @@
 <body ng-controller="chatController">
 
 <script src="/socket.io/socket.io.js"></script>
+
 <script>
     var socket = io();
 </script>
@@ -23,7 +24,9 @@
 <button ng-click="sendMessage(chatMessage)"></button>
 
 
-<p>{{ chatMessage }}</p>
+<p>Current Lat:{{ currentLat }}</p>
+<p>Current Long:{{ currentLong }}</p>
+
 
 
 </body>
