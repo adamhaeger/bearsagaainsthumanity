@@ -1,14 +1,29 @@
 <!doctype html>
-<head ng-app="app">
+<html  ng-app="app">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title ng-bind="title"></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
 </head>
-<body>
+<body ng-controller="chatController">
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var socket = io();
+</script>
 
 <h1>This is the sender</h1>
+
+
+<input type="text"  ng-model="chatMessage"/>
+
+
+<button ng-click="sendMessage(chatMessage)"></button>
+
+
+<p>{{ chatMessage }}</p>
 
 
 </body>

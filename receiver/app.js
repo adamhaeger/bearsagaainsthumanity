@@ -13,3 +13,14 @@ app.run(function () {
 
 });
 
+app.controller('chatController', ['$scope', function($scope) {
+
+
+
+    $scope.sendMessage = function(message){
+
+
+        socket.emit(message);
+    }
+
+}]);
