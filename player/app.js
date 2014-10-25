@@ -16,26 +16,32 @@ app.run(function () {
 app.controller('chatController', ['$scope', '$interval', function($scope, $interval) {
 
     var positionSuccess = function(lat, long){
+/*
         console.log(lat.coords.latitude, lat.coords.longitude);
-
-        $scope.currentLat = lat.coords.latitude;
-
-        $scope.currentLong= lat.coords.longitude;
+        $scope.player.lat = lat.coords.latitude;
+        $scope.player.long = lat.coords.longitude;
+*/
 
         socket.emit('latLong',{
-            userId : $scope.userId,
+//            userId : $scope.userId,
             lat : lat.coords.latitude,
             long: lat.coords.longitude
         });
 
     }
 
-    socket.on("userid", function(msg){
 
-        $scope.userId = msg
+    socket.on("socketCountChange", function(count){
+        console.log("socket count changed:" + count);
+        $scope.socketCount = count;
+    });
 
-        console.log(msg);
-    })
+
+    socket.on("newPlayer", function(players){
+        //$scope.player = player;
+
+        console.log(Object.keys(players));
+    });
 
 
     socket.on("newPosition", function(msg){
@@ -61,9 +67,6 @@ app.controller('chatController', ['$scope', '$interval', function($scope, $inter
         timeout           : 27000
     };
 
-//    navigator.geolocation.watchPosition(geo_success, geo_error, geo_options);
-
-
     $interval(function(){
 
         if (navigator.geolocation) {
@@ -76,8 +79,6 @@ app.controller('chatController', ['$scope', '$interval', function($scope, $inter
 
 
     }, 500);
-
-
 
 
 $scope.chatMessage = "this is the message";

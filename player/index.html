@@ -24,9 +24,10 @@
 <button ng-click="sendMessage(chatMessage)"></button>
 
 
-<p>Current Lat:{{ currentLat }}</p>
-<p>Current Long:{{ currentLong }}</p>
-<p>Your userId Is: {{ userId }}</p>
+<p>Current Lat:{{ player.lat }}</p>
+<p>Current Long:{{ player.long }}</p>
+<p>Your userId Is: {{ player.id }}</p>
+<p>Player count: {{ socketCount }}</p>
 
 
 </body>

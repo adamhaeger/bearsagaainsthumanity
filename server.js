@@ -13,15 +13,45 @@ var socketCount = 0;
 app.use(express.static(__dirname));
 
 
+function Player() {
+
+    this.id;
+    this.lat;
+    this.long;
+
+}
+
+var players = [];
+
 io.on('connection', function(socket){
     socketCount++;
     console.log('a user connected');
 
-    socket.emit("userid", socketCount);
+    var player =  new Player();
+
+    player.id = socketCount;
+
+    players[player.id];
+
+    console.log(players);
+
+    socket.emit("newPlayer", players);
+
+    socket.emit('socketCountChange',socketCount);
+
+
+
+    socket.playerId = player.id;
+
 
     socket.on('disconnect', function(){
         socketCount--;
         console.log('user disconnected');
+
+        delete players[socket.playerId];
+
+        socket.emit('socketCountChange', socketCount);
+
     });
 
     socket.on('chat message', function(msg){
@@ -41,3 +71,18 @@ io.on('connection', function(socket){
 http.listen(process.env.PORT || 8888, function(){
     console.log('listening on *:8888');
 });
+
+
+
+
+var guid = (function() {
+    function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+    }
+    return function() {
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+            s4() + '-' + s4() + s4() + s4();
+    };
+})();
