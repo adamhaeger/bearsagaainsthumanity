@@ -19,23 +19,29 @@ app.controller('chatController', ['$scope', '$interval', '$location', function($
     var hostUrl = $location.$$protocol+'://'+$location.$$host+':'+$location.$$port;
 
     var player = io.connect(hostUrl + "/player");
+var connected = false;
 
 
-
-    /*player.on('connect', function () {
-        player.emit('hi!');
-    });*/
+    player.on('connect', function () {
+        connected=true;
+    });
+    player.on('disconnect', function () {
+        connected=false;
+    });
+    
 
     var positionSuccess = function(lat, long){
     if ($scope.player && !$scope.player.isBurned) {
         $scope.player.lat = lat.coords.latitude;
             $scope.player.long = lat.coords.longitude;
             //console.log('Updating position for: ', $scope.player);
-            player.emit('latLong', {
+            if (connected) {
+                player.emit('latLong', {
                 id : $scope.player.id,
                 lat : lat.coords.latitude,
                 long: lat.coords.longitude
             });
+            };
     };    
     }
     $scope.burn = function() {
@@ -93,7 +99,6 @@ app.controller('chatController', ['$scope', '$interval', '$location', function($
     };
 
     $interval(function(){
-
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(positionSuccess, positionError, {
                 enableHighAccuracy : true

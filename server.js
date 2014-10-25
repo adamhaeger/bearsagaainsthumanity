@@ -33,28 +33,20 @@ function Player() {
 
 var player = io.of("/player")
 .on("connection", function(socket){
-
-
         console.log("new player connected");
         var newPlayer =  new Player();
         bear.players.push(newPlayer);
-
         //console.log("this is our player:", bear.players);
-
         player.emit("newPlayer", newPlayer);
-
         socket.on('latLong', function(msg){
             //console.log("receiving new lat longs");
             if (msg.lat && msg.long && bear.players[msg.id]) {
                 bear.players[msg.id].lat = msg.lat;
                 bear.players[msg.id].long = msg.long;
-
                 //console.log(players[msg.id]);
-
                 spectator.emit('newPosition', bear.players[msg.id]);
             }
         });
-
         socket.on('burn', function(msg) {
             console.log('Starting burn!', msg);
             var attackingPlayer = msg.player;
@@ -86,10 +78,11 @@ var player = io.of("/player")
                 };
             };
         });
+        socket.on('resetGame', function() {
+            bear.players = [];
+            supporter.emit('playerlist', bear.players);
+        });
     });
-
-
-
 
 var spectator = io.of('/spectator')
     .on("connection", function(socket){
