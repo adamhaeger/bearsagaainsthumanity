@@ -24,13 +24,14 @@ app.controller('spectatorController', ['$scope','$location', function($scope,$lo
 	var map;
 	var myLatlng = new google.maps.LatLng(59.438006,10.593910);
 	var carebearImg = 'images/carebear.png';
+	var carebearImgArr = ['images/carebear1.png','images/carebear2.png','images/carebear3.png','images/carebear4.png'];
 	//var carebearImg = 'http://www.agence2presse.eu/Agence2Presse/Scripts/Widgets/Timer/flip/';
 	var players = [];
 	var playerExists = function(id) {
 		return (typeof players[id] != 'undefined');
 	}
 	var burnPlayer = function(id) {
-		if(players[id]) {
+		if(players[id] && !players[id].isBurned) {
 			players[id].marker.setIcon("http://img1.wikia.nocookie.net/__cb20100718075739/callofduty/images/5/5a/Icon_skull.png");
 			players[id].marker.setAnimation(google.maps.Animation.BOUNCE);
 			setTimeout(function() {
@@ -51,7 +52,7 @@ app.controller('spectatorController', ['$scope','$location', function($scope,$lo
 	}
 	var createPlayer = function(id,lat,long) {
 		var playersLatlng = new google.maps.LatLng(lat,long);
-		 
+		var iconNumber = Math.floor((Math.random() * 4));
 		players[id] = {
 			id: id,
 			lat: lat,
@@ -60,7 +61,7 @@ app.controller('spectatorController', ['$scope','$location', function($scope,$lo
 			    position: playersLatlng,
 			    map: map,
 			    title:"PLayerId:"+id,
-			    icon: carebearImg
+			    icon: carebearImgArr[iconNumber]
 			}),
 			infoWindow: new google.maps.InfoWindow({
       			content: getInfoWindowContent(id,lat,long),
@@ -155,7 +156,7 @@ app.controller('spectatorController', ['$scope','$location', function($scope,$lo
 		return '<div class="infoWindowContent" id="markerInfo'+id+'">'+
 		      '<div id="siteNotice">'+
 		      '</div>'+
-		      '<h3>Spiller: '+id+'</h3>'+
+		      '<h3>'+id+'</h3>'+
 		      '<div class="message"></div>'+
 		      //'<p class="lat">lat: '+lat+'</p>'+
 		      //'<p class="lang">long: '+long+'</p>'
