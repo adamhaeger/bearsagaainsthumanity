@@ -9,6 +9,7 @@
     <script type="text/javascript" src="https://maps.google.com/maps/api/js?libraries=geometry&sensor=false"></script>
    <script src="/socket.io/socket.io.js"></script>
 	<link href='http://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet' type='text/css'>
+	
     <style>
 
     * {
@@ -23,7 +24,7 @@
 			width:100%;height:100%;margin: 0;
     	}
     	.chatWindow {
-    		position: relative;
+
     		font-family: 'Press Start 2P', sans-serif;
     		position: absolute;
     		width: 300px;
@@ -33,12 +34,18 @@
     		background-color: rgba(0,0,0,0.6);
     		color:greenyellow;
     		padding: 20px;
-    		overflow: hidden;
+    		
     		
     	}
     	.chatWindow div {
-    		top:0;
+    		height: 100%;
+    		overflow: hidden;
+    		position: relative;
+    	}
+    	ul {
     		position: absolute;
+    		top:0;
+    		margin:0;
     	}
     	ul,li{
     		list-style: none;
@@ -48,7 +55,20 @@
     		font-size: 14px;
     		margin-bottom: 10px;
     	}
+    	.blink {
+	        animation: blink 1s steps(5, start) 3;
+	        -webkit-animation: blink 1s steps(5, start) 3;
+		    }
+		    @keyframes blink {
+		        to { visibility: hidden; }
+		    }
+		    @-webkit-keyframes blink {
+		        to { visibility: hidden; }
+	    }
     </style>
+    <script>
+
+</script>
 </head>
 <body ng-controller="spectatorController">
 
@@ -56,7 +76,7 @@
 <div class="chatWindow">
 	<div>
 	<ul>
-		<li ng-repeat="feed in feedItems track by $index">
+		<li ng-repeat="feed in feedItems track by $index | orderBy:'sort_id':true">
 			{{feed}}
 		</li>
 	</ul>
@@ -64,6 +84,7 @@
 </div>
 
 </body>
+
 <script src="../bower_components/jquery/dist/jquery.min.js"></script>
 <script src="../bower_components/angular/angular.min.js"></script>
 <script src="../bower_components/angular-resource/angular-resource.js"></script>

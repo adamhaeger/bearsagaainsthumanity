@@ -19,6 +19,7 @@ app.run(function () {
 app.controller('spectatorController', ['$scope','$location', function($scope,$location) {
 	var hostUrl = $location.$$protocol+'://'+$location.$$host+':'+$location.$$port;
 	spectator = this;
+	var id_counter = 1;
 	//var socket = io();
 	var socket = io.connect(hostUrl+'/spectator');
 	var map;
@@ -106,7 +107,7 @@ app.controller('spectatorController', ['$scope','$location', function($scope,$lo
 		burnPlayer(msg.id);
 	});
 	socket.on('message', function(msg){
-		$scope.feedItems.splice(0, 0, msg);
+		$scope.feedItems.unshift(msg);
 		$scope.$apply();
 	});
 	socket.on('newPosition', function(msg){
@@ -153,10 +154,15 @@ app.controller('spectatorController', ['$scope','$location', function($scope,$lo
 
 			});
 		}, 3000);
+		
+		setInterval(function () {			
+			$scope.feedItems.unshift('hallo'+Math.random());
+			$scope.$apply();
+		}, 2000);
 
 		
 	}
-	//$scope.feedItems = ['Player 1 burned player 2','Player 4 burned player 1','Player 2 left the game','Player 1 burned player 7'];
+	//$scope.feedItems = ['Player 1 burned player 2','Player 4 burned player 1','Player 2 left the game','Player 1 burned player 7','Player 1 burned player 2','Player 4 burned player 1','Player 2 left the game','Player 1 burned player 7','Player 1 burned player 2','Player 4 burned player 1','Player 2 left the game','Player 1 burned player 7','Player 1 burned player 2','Player 4 burned player 1','Player 2 left the game','Player 1 burned player 7'];
 	
 	$scope.feedItems = [];
 	function getInfoWindowContent(id,lat,long) {
@@ -173,3 +179,68 @@ app.controller('spectatorController', ['$scope','$location', function($scope,$lo
 	//test();
 
 }]);
+app.directive('typewrite', ['$timeout', function ($timeout) {
+		function linkFunction (scope, iElement, iAttrs) {
+			var timer = null,
+				initialDelay = iAttrs.initialDelay ? getTypeDelay(iAttrs.initialDelay) : 200,
+				typeDelay = iAttrs.typeDelay ? getTypeDelay(iAttrs.typeDelay) : 200,
+				blinkDelay = iAttrs.blinkDelay ? getAnimationDelay(iAttrs.blinkDelay) : false,
+				cursor = iAttrs.cursor ? iAttrs.cursor : '|',
+				blinkCursor = iAttrs.blinkCursor ? iAttrs.blinkCursor === "true" : true,
+				auxStyle;
+			if (iAttrs.text) {
+				timer = $timeout(function() {
+					updateIt(iElement, 0, iAttrs.text);
+				}, initialDelay);
+			}
+
+			function updateIt(element, i, text){
+				if (i <= text.length) {
+					element.html(text.substring(0, i) + cursor);
+					i++;
+					timer = $timeout(function() {
+						updateIt(iElement, i, text);
+					}, typeDelay);
+					return;
+				} else {
+					if (blinkCursor) {
+						if (blinkDelay) {
+							auxStyle = '-webkit-animation:blink-it steps(1) ' + blinkDelay + ' infinite;-moz-animation:blink-it steps(1) ' + blinkDelay + ' infinite ' +
+										'-ms-animation:blink-it steps(1) ' + blinkDelay + ' infinite;-o-animation:blink-it steps(1) ' + blinkDelay + ' infinite; ' +
+										'animation:blink-it steps(1) ' + blinkDelay + ' infinite;';
+							element.html(text.substring(0, i) + '<span class="blink" style="' + auxStyle + '">' + cursor + '</span>');
+						} else {
+							element.html(text.substring(0, i) + '<span class="blink">' + cursor + '</span>');
+						}
+					} else {
+						element.html(text.substring(0, i));
+					}
+				}
+			}
+
+			function getTypeDelay(delay) {
+				if (typeof delay === 'string') {
+					return delay.charAt(delay.length - 1) === 's' ? parseInt(delay.substring(0, delay.length - 1), 10) * 1000 : +delay;
+				}
+			}
+
+			function getAnimationDelay(delay) {
+				if (typeof delay === 'string') {
+					return delay.charAt(delay.length - 1) === 's' ? delay : parseInt(delay.substring(0, delay.length - 1), 10) / 1000;
+				}
+			}
+
+			scope.$on('$destroy', function() {
+				if(timer) {
+					$timeout.cancel(timer);
+				}
+			});
+		}
+
+		return {
+			restrict: 'A',
+			link: linkFunction,
+			scope: false
+		};
+
+	}]);
