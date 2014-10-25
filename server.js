@@ -46,13 +46,16 @@ var player = io.of("/player")
             if (msg.lat && msg.long && bear.players[msg.id]) {
                 bear.players[msg.id].lat = msg.lat;
                 bear.players[msg.id].long = msg.long;
-
+                
             console.log("receiving new lat longs");
 
             players[msg.id].lat = msg.lat;
             players[msg.id].long = msg.long;
             players[msg.id].lat = msg.lat;
             players[msg.id].long = msg.long;
+
+                bear.players[msg.id].lat = msg.lat;
+            bear.players[msg.id].long = msg.long;
 
                 spectator.emit('newPosition', bear.players[msg.id]);
             }
@@ -118,6 +121,15 @@ http.listen(process.env.PORT || 8888, function(){
 });
 
 
+
+function findById(source, id) {
+    for (var i = 0; i < source.length; i++) {
+        if (source[i].id === id) {
+            return source[i];
+        }
+    }
+    throw "Couldn't find object with id: " + id;
+}
 
 
 var guid = (function() {
