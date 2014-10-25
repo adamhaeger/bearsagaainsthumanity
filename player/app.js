@@ -28,11 +28,11 @@ app.controller('chatController', ['$scope', '$interval', '$location', function($
 
     var positionSuccess = function(lat, long){
 
-        player.emit('latLong', {
+        /*player.emit('latLong', {
             id : $scope.player.id,
             lat : lat.coords.latitude,
             long: lat.coords.longitude
-        });
+        });*/
     }
 
 

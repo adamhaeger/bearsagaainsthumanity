@@ -15,5 +15,8 @@ app.run(function () {
 
 app.controller('supporterController', ['$scope', function($scope) {
 
+    
+
+
 
 }]);
