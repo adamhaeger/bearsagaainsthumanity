@@ -6,6 +6,11 @@
   },
   "dependencies": {
     "express": "latest",
-    "socket.io" : "latest"
+    "socket.io" : "latest",
+    "bower": "latest"
+  },
+  "scripts": {
+    "postinstall": "./node_modules/bower/bin/bower install"
   }
 }
+
