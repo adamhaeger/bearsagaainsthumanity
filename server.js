@@ -31,14 +31,12 @@ var player = io.of("/player")
 
         console.log("new player connected");
 
-        var player =  new Player();
-        players[player.id] = player;
+        var newPlayer =  new Player();
+        players[newPlayer.id] = newPlayer;
 
-        console.log("this is our player:", player);
+        console.log("this is our player:", newPlayer);
 
-
-
-        player.emit("newPlayer", player);
+        player.emit("newPlayer", newPlayer);
 
         socket.on('latLong', function(msg){
 
