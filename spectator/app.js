@@ -18,7 +18,9 @@ app.run(function () {
 
 app.controller('spectatorController', ['$scope', function($scope) {
 	spectator = this;
-	var socket = io();
+	//var socket = io();
+	var socket = io.connect('http://localhost:8888/spectator');
+	var spectator
 	var map;
 	var myLatlng = new google.maps.LatLng(59.438006,10.593910);
 	var carebearImg = 'images/carebear.png';
@@ -37,13 +39,19 @@ app.controller('spectatorController', ['$scope', function($scope) {
 			    map: map,
 			    title:"PLayerId:"+id,
 			    icon: carebearImg
-			})
+			}),
+			//infoWindow: new google.maps.InfoWindow({
+      		//	content: "Player: "+id
+			//});
 		}
 
 	}
 	var positionPlayer = function(id,lat,long) {
+
 		var playersLatlng = new google.maps.LatLng(lat,long);
 		players[id].marker.setPosition(playersLatlng);
+		//players[id].marker.setAnimation(google.maps.Animation.BOUNCE);
+		//setTimeout(function() {players[id].marker.setAnimation(null);}, 2000);
 
 	}
 	spectator.initialize = function() {
@@ -61,10 +69,12 @@ app.controller('spectatorController', ['$scope', function($scope) {
 	socket.on('connect',function() {
 		console.log("connected to server");
 	});
-	socket.on('newposition', function(msg){
+	socket.on('newPosition', function(msg){
+		        
         console.log('new lat: ' + msg.lat);
         console.log('new long: ' + msg.long);
         console.log('new id: ' + msg.id);
+
         if (!playerExists(msg.id)) {
         	createPlayer(msg.id,msg.lat,msg.long);
         }

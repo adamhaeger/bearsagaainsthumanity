@@ -47,14 +47,14 @@ var player = io.of("/player")
 
             console.log(players[msg.id]);
 
-            spectator.emit('newPosition', player[msg.id]);
+            spectator.emit('newPosition', players[msg.id]);
         });
     });
 
 
 
 
-var spectator = io.of('specator')
+var spectator = io.of('spectator')
     .on("connection", function(socket){
 
         console.log("got a new spectator connection");
