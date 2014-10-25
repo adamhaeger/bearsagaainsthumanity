@@ -16,7 +16,7 @@ app.use(express.static(__dirname));
 
 
 bear.players = [];
-var test = "espen";
+
 
 var numPlayers = 0;
 
@@ -35,7 +35,6 @@ var player = io.of("/player")
 
 
         console.log("new player connected");
-        test = "Esepn Ottar"
         var newPlayer =  new Player();
         bear.players.push(newPlayer);
 
