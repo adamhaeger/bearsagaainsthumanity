@@ -13,38 +13,39 @@ app.run(function () {
 
 });
 
-
-
-
-
 app.controller('chatController', ['$scope', '$interval', function($scope, $interval) {
-
-
 
     var positionSuccess = function(lat, long){
         console.log(lat.coords.latitude, lat.coords.longitude);
-
 
         $scope.currentLat = lat.coords.latitude;
 
         $scope.currentLong= lat.coords.longitude;
 
         socket.emit('latLong',{
+            userId : $scope.userId,
             lat : lat.coords.latitude,
             long: lat.coords.longitude
         });
 
     }
 
-    socket.on("userid", function(){})
+    socket.on("userid", function(msg){
 
+        $scope.userId = msg
+
+        console.log(msg);
+    })
+
+
+    socket.on("newPosition", function(msg){
+        console.log(msg);
+    })
 
     var positionError = function(error){
 
         console.log("this is the error", erro);
     }
-
-
 
     function geo_success(position) {
         positionSuccess(position.coords.latitude, position.coords.longitude);

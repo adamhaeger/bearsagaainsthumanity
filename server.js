@@ -13,27 +13,25 @@ var socketCount = 0;
 app.use(express.static(__dirname));
 
 
-
 io.on('connection', function(socket){
-    socketCount+=1;
+    socketCount++;
     console.log('a user connected');
 
-    socket.emit("userid", socketCount)
-
+    socket.emit("userid", socketCount);
 
     socket.on('disconnect', function(){
+        socketCount--;
         console.log('user disconnected');
     });
-
 
     socket.on('chat message', function(msg){
         console.log('message: ' + msg);
     });
 
-
     socket.on('latLong', function(msg){
         console.log('new lat: ' + msg.lat);
         console.log('new long: ' + msg.long);
+        socket.emit("newPosition", msg)
     });
 
 
