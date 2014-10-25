@@ -13,7 +13,21 @@ app.run(function () {
 
 });
 
-app.controller('supporterController', ['$scope', function($scope) {
+app.controller('supporterController', ['$scope','$location', function($scope,$location) {
+    var hostUrl = $location.$$protocol+'://'+$location.$$host+':'+$location.$$port;
+    var players = [];
+    var socket = io.connect(hostUrl+'/supporter');
 
+    socket.on('connect',function() {
+        console.log("connected to server");
+    });
+    socket.on('newPlayer', function(msg) {
+        console.log("Got new player:" + msg.id);
+        players[msg.id] = msg;
+    });
+    socket.on('playerlist', function(msg){
+        players = msg;
+        console.log("Players: " + players);
+    });
 
 }]);
