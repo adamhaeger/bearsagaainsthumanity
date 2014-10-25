@@ -39,17 +39,31 @@ var player = io.of("/player")
         var newPlayer =  new Player();
         bear.players.push(newPlayer);
 
+<<<<<<< HEAD
         //console.log("this is our player:", bear.players);
+=======
+
+        console.log("this is players", players);
+
+        console.log("this is our player:", newPlayer);
+>>>>>>> commmit
 
         player.emit("newPlayer", newPlayer);
 
         socket.on('latLong', function(msg){
+<<<<<<< HEAD
             //console.log("receiving new lat longs");
             if (msg.lat && msg.long && bear.players[msg.id]) {
                 bear.players[msg.id].lat = msg.lat;
                 bear.players[msg.id].long = msg.long;
 
                 //console.log(players[msg.id]);
+=======
+            console.log("receiving new lat longs");
+
+            players[msg.id].lat = msg.lat;
+            players[msg.id].long = msg.long;
+>>>>>>> commmit
 
                 spectator.emit('newPosition', bear.players[msg.id]);
             }
