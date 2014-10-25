@@ -58,7 +58,7 @@ app.controller('chatController', ['$scope', '$interval', '$location', function($
 
     var positionError = function(error){
 
-        console.log("this is the error", erro);
+        console.log("this is the error", error);
     }
 
     function geo_success(position) {
