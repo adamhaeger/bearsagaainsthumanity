@@ -23,24 +23,24 @@ app.controller('chatController', ['$scope', '$interval', function($scope, $inter
 
     var positionSuccess = function(lat, long){
         player.emit('latLong', {
-            id : socket.playerId,
+            id : $scope.player.id,
             lat : lat.coords.latitude,
             long: lat.coords.longitude
         });
     }
 
 
-    socket.on("socketCountChange", function(count){
+    player.on("socketCountChange", function(count){
         console.log("socket count changed:" + count);
         $scope.socketCount = count;
     });
 
 
-    socket.on("newPlayer", function(players){
-        console.log(socket.playerId);
-        //$scope.player = player;
+    player.on("newPlayer", function(player){
+        console.log("this is our player:", player);
+        $scope.player = player;
         console.log('new player added');
-        console.log(Object.keys(players));
+
     });
 
 

@@ -17,7 +17,7 @@ var players = [];
 
 function Player() {
 
-    this.id = guid;
+    this.id = guid();
     this.lat;
     this.long;
 
@@ -34,6 +34,9 @@ var player = io.of("/player")
         var player =  new Player();
         players[player.id] = player;
 
+        console.log("this is our player:", player);
+
+        socket.emit("newPlayer", player);
 
         socket.on('latLong', function(msg){
 
@@ -42,7 +45,7 @@ var player = io.of("/player")
             players[msg.id].lat = msg.lat;
             players[msg.id].long = msg.long;
 
-            //socket.emit("newPosition", player[msg.id])
+            console.log(players[msg.id]);
 
             spectator.emit('newPosition', player[msg.id]);
         });
