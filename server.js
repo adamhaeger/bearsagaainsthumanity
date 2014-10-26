@@ -60,6 +60,15 @@ var player = io.of("/player")
                 spectator.emit('newPosition', bear.players[msg.id]);
             }
         });
+
+        socket.on('chatMessage', function(message){
+            console.log(message);
+
+            player.emit("newChatMessage", message)
+
+        });
+
+
         socket.on('burn', function(msg) {
             console.log('Starting burn!', msg);
             var attackingPlayer = msg.player;
@@ -113,6 +122,9 @@ var supporter = io.of('/supporter')
 
     socket.emit('playerlist', bear.players);
     //socket.on("newPosition", function(player){})
+
+
+
 });
 
 

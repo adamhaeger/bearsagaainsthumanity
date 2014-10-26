@@ -1,0 +1,10 @@
+<div>
+    <h1>Chat with player {{ currentPlayer.id }}</h1>
+</div>
+
+<textarea rows="10" rows="10" class="chat" ng-model="chatMessage"></textarea>
+        <button ng-click="sendMessage(chatMessage)" class="send-button">Send message</button>
+
+<ul ng-repeat="message in currentPlayer.messages">
+    <li>{{ message }}</li>
+</ul>

@@ -50,7 +50,7 @@ body {
 }
 
 </style>
-<body ng-controller="chatController" ng-class="{ playerburned: player.isBurned}">
+<body ng-controller="chatController" ng-class="{ playerburned: player.isBurned} ">
 
 <script src="/socket.io/socket.io.js"></script>
 
@@ -73,8 +73,8 @@ body {
     <span>Messages:</span>
 
 
-    <ul ng-repeat="">
-        <li></li>
+    <ul ng-repeat="message in player.messages">
+        <li>{{ message }}</li>
     </ul>
 
 </div>

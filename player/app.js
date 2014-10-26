@@ -20,7 +20,7 @@ app.controller('chatController', ['$scope', '$interval', '$location', function($
     var hostUrl = $location.$$protocol+'://'+$location.$$host+':'+$location.$$port;
 
     var player = io.connect(hostUrl + "/player");
-var connected = false;
+    var connected = false;
 
 
     player.on('connect', function () {
@@ -29,7 +29,6 @@ var connected = false;
     player.on('disconnect', function () {
         connected=false;
     });
-    
 
     var positionSuccess = function(lat, long){
     if ($scope.player && !$scope.player.isBurned) {
@@ -47,10 +46,7 @@ var connected = false;
     }
     $scope.burn = function() {
         console.log('Activated burn: ', $scope.player);
-        // if ($scope.player.burnAmmo > 0) {
-        //         $scope.player.burnAmmo--;
-        //         //socket.emit("newPlayer", attackingPlayer);
-        //     };
+
         player.emit('burn', {
             player : $scope.player,
             lat : $scope.player.lat,
@@ -73,6 +69,27 @@ var connected = false;
         if ($scope.player.isBurned) {
             Audio("mp3/die.mp3").play();
         }
+    });
+
+    player.on("newChatMessage", function(message){
+
+        console.log(message);
+
+        if(message.id  === $scope.player.id ){
+
+
+            if(!$scope.player.messages){
+                $scope.player.messages = [];
+            }
+
+            $scope.player.messages.push(message.message);
+        }
+
+        /*console.log("new chat message", player);
+        if(!$scope.player || $scope.player.id === player.id){
+            console.log("updated player:", player);
+            $scope.player = player;
+        }*/
     });
 
 
@@ -113,11 +130,7 @@ var connected = false;
 
 
     }, 500);
+
 $scope.chatMessage = "this is the message";
-
-    $scope.sendMessage = function(message){
-        console.log("sending message", message);
-        socket.emit('chat message', message);
-    }
-
+    
 }]);
