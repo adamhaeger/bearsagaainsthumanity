@@ -105,6 +105,7 @@ app.controller('spectatorController', ['$scope','$location', function($scope,$lo
 	socket.on('burnedPlayer', function(msg){
 		console.log('burning: '+msg.id);
 		burnPlayer(msg.id);
+		new Audio("../player/mp3/die.mp3").play();
 	});
 	socket.on('message', function(msg){
 		$scope.feedItems.unshift(msg);
