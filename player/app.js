@@ -132,5 +132,5 @@ app.controller('chatController', ['$scope', '$interval', '$location', function($
     }, 500);
 
 $scope.chatMessage = "this is the message";
-    
+
 }]);

@@ -37,9 +37,11 @@ var player = io.of("/player")
         var newPlayer =  new Player();
         bear.players.push(newPlayer);
         
+/*
 
         console.log("this is players", players);
         console.log("this is our player:", newPlayer);
+*/
 
         player.emit("newPlayer", newPlayer);
         socket.on('latLong', function(msg){
@@ -49,10 +51,10 @@ var player = io.of("/player")
                 
             console.log("receiving new lat longs");
 
-            players[msg.id].lat = msg.lat;
-            players[msg.id].long = msg.long;
-            players[msg.id].lat = msg.lat;
-            players[msg.id].long = msg.long;
+                bear.players[msg.id].lat = msg.lat;
+                bear.players[msg.id].long = msg.long;
+                bear.players[msg.id].lat = msg.lat;
+                bear.players[msg.id].long = msg.long;
 
                 bear.players[msg.id].lat = msg.lat;
             bear.players[msg.id].long = msg.long;

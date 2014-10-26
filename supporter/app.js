@@ -66,20 +66,13 @@ app.controller('supporterController', ['$scope','$location', function($scope,$lo
 
 
         console.log(message);
-        /*console.log($scope.currentPlayer);
 
 
-
-        if(!$scope.currentPlayer.messages) {
-            $scope.currentPlayer.messages = [];
+        if(!$scope.currentPlayer.messages){
+            $scope.currentPlayer.messages = []
         }
 
         $scope.currentPlayer.messages.push(message);
-*/
-
-  /*      message = null;
-        $scope.chatMessage = null;
-*/
 
         player.emit("chatMessage", {id : $scope.currentPlayer.id,  message : message})
 
