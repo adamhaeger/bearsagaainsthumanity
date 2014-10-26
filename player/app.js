@@ -68,7 +68,10 @@ var connected = false;
         if(!$scope.player || $scope.player.id === player.id){
             console.log("updated player:", player);
              $scope.player = player;
-         }
+        }
+        if ($scope.player.isBurned) {
+            Audio("mp3/die.mp3").play();
+        }
     });
 
 
